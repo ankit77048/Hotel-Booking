@@ -65,7 +65,7 @@ function HotelsPage() {
                 value={q}
                 onChange={(e) => {
                   setQ(e.target.value);
-                  navigate({ search: (s) => ({ ...s, q: e.target.value || undefined }), replace: true });
+                  navigate({ search: (s: any) => ({ ...s, q: e.target.value || undefined }), replace: true });
                 }}
                 placeholder="City, country, name"
                 className="border-0 shadow-none focus-visible:ring-0"
@@ -78,7 +78,7 @@ function HotelsPage() {
               value={[minStars]}
               max={5}
               step={0.5}
-              onValueChange={([v]) => navigate({ search: (s) => ({ ...s, minStars: v || undefined }), replace: true })}
+              onValueChange={([v]) => navigate({ search: (s: any) => ({ ...s, minStars: v || undefined }), replace: true })}
               className="mt-3"
             />
           </div>
@@ -89,7 +89,7 @@ function HotelsPage() {
               min={10000}
               max={60000}
               step={1000}
-              onValueChange={([v]) => navigate({ search: (s) => ({ ...s, maxPrice: v }), replace: true })}
+              onValueChange={([v]) => navigate({ search: (s: any) => ({ ...s, maxPrice: v }), replace: true })}
               className="mt-3"
             />
           </div>
