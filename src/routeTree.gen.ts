@@ -9,38 +9,166 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as HotelsRouteImport } from './routes/hotels'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as HotelsSlugRouteImport } from './routes/hotels.$slug'
+import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
+import { Route as AuthenticatedBookingsRouteImport } from './routes/_authenticated/bookings'
+import { Route as ApiPublicSeedDemoRouteImport } from './routes/api/public/seed-demo'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HotelsRoute = HotelsRouteImport.update({
+  id: '/hotels',
+  path: '/hotels',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HotelsSlugRoute = HotelsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => HotelsRoute,
+} as any)
+const AuthenticatedCheckoutRoute = AuthenticatedCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedBookingsRoute = AuthenticatedBookingsRouteImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const ApiPublicSeedDemoRoute = ApiPublicSeedDemoRouteImport.update({
+  id: '/api/public/seed-demo',
+  path: '/api/public/seed-demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/hotels': typeof HotelsRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/bookings': typeof AuthenticatedBookingsRoute
+  '/checkout': typeof AuthenticatedCheckoutRoute
+  '/hotels/$slug': typeof HotelsSlugRoute
+  '/api/public/seed-demo': typeof ApiPublicSeedDemoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/hotels': typeof HotelsRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/bookings': typeof AuthenticatedBookingsRoute
+  '/checkout': typeof AuthenticatedCheckoutRoute
+  '/hotels/$slug': typeof HotelsSlugRoute
+  '/api/public/seed-demo': typeof ApiPublicSeedDemoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/hotels': typeof HotelsRouteWithChildren
+  '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
+  '/_authenticated/bookings': typeof AuthenticatedBookingsRoute
+  '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
+  '/hotels/$slug': typeof HotelsSlugRoute
+  '/api/public/seed-demo': typeof ApiPublicSeedDemoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/hotels'
+    | '/login'
+    | '/signup'
+    | '/bookings'
+    | '/checkout'
+    | '/hotels/$slug'
+    | '/api/public/seed-demo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/hotels'
+    | '/login'
+    | '/signup'
+    | '/bookings'
+    | '/checkout'
+    | '/hotels/$slug'
+    | '/api/public/seed-demo'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/hotels'
+    | '/login'
+    | '/signup'
+    | '/_authenticated/bookings'
+    | '/_authenticated/checkout'
+    | '/hotels/$slug'
+    | '/api/public/seed-demo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  HotelsRoute: typeof HotelsRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
+  ApiPublicSeedDemoRoute: typeof ApiPublicSeedDemoRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hotels': {
+      id: '/hotels'
+      path: '/hotels'
+      fullPath: '/hotels'
+      preLoaderRoute: typeof HotelsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +176,70 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hotels/$slug': {
+      id: '/hotels/$slug'
+      path: '/$slug'
+      fullPath: '/hotels/$slug'
+      preLoaderRoute: typeof HotelsSlugRouteImport
+      parentRoute: typeof HotelsRoute
+    }
+    '/_authenticated/checkout': {
+      id: '/_authenticated/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof AuthenticatedCheckoutRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/bookings': {
+      id: '/_authenticated/bookings'
+      path: '/bookings'
+      fullPath: '/bookings'
+      preLoaderRoute: typeof AuthenticatedBookingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/api/public/seed-demo': {
+      id: '/api/public/seed-demo'
+      path: '/api/public/seed-demo'
+      fullPath: '/api/public/seed-demo'
+      preLoaderRoute: typeof ApiPublicSeedDemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AuthenticatedRouteChildren {
+  AuthenticatedBookingsRoute: typeof AuthenticatedBookingsRoute
+  AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedBookingsRoute: AuthenticatedBookingsRoute,
+  AuthenticatedCheckoutRoute: AuthenticatedCheckoutRoute,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
+interface HotelsRouteChildren {
+  HotelsSlugRoute: typeof HotelsSlugRoute
+}
+
+const HotelsRouteChildren: HotelsRouteChildren = {
+  HotelsSlugRoute: HotelsSlugRoute,
+}
+
+const HotelsRouteWithChildren =
+  HotelsRoute._addFileChildren(HotelsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  HotelsRoute: HotelsRouteWithChildren,
+  LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
+  ApiPublicSeedDemoRoute: ApiPublicSeedDemoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
