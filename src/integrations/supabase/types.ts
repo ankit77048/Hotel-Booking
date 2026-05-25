@@ -14,7 +14,191 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          check_in: string
+          check_out: string
+          created_at: string
+          guest_email: string
+          guest_name: string
+          guests: number
+          hotel_id: string
+          id: string
+          payment_reference: string | null
+          payment_status: Database["public"]["Enums"]["payment_status"]
+          room_id: string
+          status: Database["public"]["Enums"]["booking_status"]
+          total_cents: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          check_in: string
+          check_out: string
+          created_at?: string
+          guest_email: string
+          guest_name: string
+          guests?: number
+          hotel_id: string
+          id?: string
+          payment_reference?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          room_id: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          total_cents: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          check_in?: string
+          check_out?: string
+          created_at?: string
+          guest_email?: string
+          guest_name?: string
+          guests?: number
+          hotel_id?: string
+          id?: string
+          payment_reference?: string | null
+          payment_status?: Database["public"]["Enums"]["payment_status"]
+          room_id?: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          total_cents?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hotels: {
+        Row: {
+          amenities: string[]
+          base_price_cents: number
+          city: string
+          country: string
+          created_at: string
+          description: string
+          gallery: string[]
+          hero_image: string
+          id: string
+          name: string
+          slug: string
+          star_rating: number
+        }
+        Insert: {
+          amenities?: string[]
+          base_price_cents: number
+          city: string
+          country: string
+          created_at?: string
+          description: string
+          gallery?: string[]
+          hero_image: string
+          id?: string
+          name: string
+          slug: string
+          star_rating?: number
+        }
+        Update: {
+          amenities?: string[]
+          base_price_cents?: number
+          city?: string
+          country?: string
+          created_at?: string
+          description?: string
+          gallery?: string[]
+          hero_image?: string
+          id?: string
+          name?: string
+          slug?: string
+          star_rating?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rooms: {
+        Row: {
+          capacity: number
+          created_at: string
+          description: string
+          hotel_id: string
+          id: string
+          images: string[]
+          name: string
+          price_cents: number
+          room_type: string
+          total_units: number
+        }
+        Insert: {
+          capacity?: number
+          created_at?: string
+          description: string
+          hotel_id: string
+          id?: string
+          images?: string[]
+          name: string
+          price_cents: number
+          room_type: string
+          total_units?: number
+        }
+        Update: {
+          capacity?: number
+          created_at?: string
+          description?: string
+          hotel_id?: string
+          id?: string
+          images?: string[]
+          name?: string
+          price_cents?: number
+          room_type?: string
+          total_units?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rooms_hotel_id_fkey"
+            columns: ["hotel_id"]
+            isOneToOne: false
+            referencedRelation: "hotels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +207,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      booking_status: "pending" | "confirmed" | "cancelled"
+      payment_status: "pending" | "paid" | "refunded" | "failed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +335,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      booking_status: ["pending", "confirmed", "cancelled"],
+      payment_status: ["pending", "paid", "refunded", "failed"],
+    },
   },
 } as const
